@@ -1,20 +1,27 @@
 import csv
 import os
 from extractors.extractor import extract_multi_needle
+from extractors.utils import read_file
 from extractors.models import TechCompany
 
 # Define the haystack and example needles
-haystack = """Ryoshi, based in Neo Tokyo, Japan, is a private quantum computing firm founded in 2031, currently valued at $8.7 billion with 1,200 employees focused on quantum cryptography.
-        
-        ChronosTech, located in New Shanghai, Earth, was founded in 2077,
-        employs 2,800 people, and focuses on time-manipulation devices,
-        with a public status and a valuation of $6.2 billion.
+# haystack = """Ryoshi, based in Neo Tokyo, Japan, is a private quantum computing firm founded in 2031, currently valued at $8.7 billion with 1,200 employees focused on quantum cryptography.
 
-        Quantum Forge, a public company located in Orion City, Earth, was
-        founded in 2030 and currently employs 12,500 people, with a
-        valuation of $15.4 billion focused on quantum computing
-        advancements.
-        """
+#         ChronosTech, located in New Shanghai, Earth, was founded in 2077,
+#         employs 2,800 people, and focuses on time-manipulation devices,
+#         with a public status and a valuation of $6.2 billion.
+
+#         Quantum Forge, a public company located in Orion City, Earth, was
+#         founded in 2030 and currently employs 12,500 people, with a
+#         valuation of $15.4 billion focused on quantum computing
+#         advancements.
+#         """
+haystack = read_file("data/haystack.txt")
+lines = haystack.splitlines()
+lines = lines[47_000:48_000]
+# lines = lines[47_000:51_000]
+haystack = "\n".join(lines)
+
 
 example_needles = [
     """Luna Dynamics, headquartered in Nova Europa, Moon, is a public
