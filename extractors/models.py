@@ -20,22 +20,22 @@ class TechCompany(BaseModel):
         default=None,
         description="Whether the company is publicly traded (True) or privately held (False)",
     )
-    valuation: Optional[float] = Field(
+    valuation: float = Field(
         default=None, description="Company's valuation in billions of dollars"
     )
-    primary_focus: Optional[str] = Field(
+    primary_focus: str = Field(
         default=None,
         description="Main area of technology or industry the company focuses on",
     )
 
-    @field_validator('name')
+    @field_validator("name")
     @classmethod
-    def validate_name(cls, value,  info: ValidationInfo):
+    def validate_name(cls, value, info: ValidationInfo):
         context = info.context
         if context:
-            haystack = context.get('data', '')
+            haystack = context.get("data", "")
             if value not in haystack:
-                raise ValueError(f"Company name: '{value}' is not found in context given to you. Do not use examples. Use only context.")
-            else:
-                print(f"[DEBUG]: Company name: '{value}' is found.")
+                raise ValueError(
+                    f"Company name: '{value}' is not found in context given to you. Do not use examples. Use only context."
+                )
         return value

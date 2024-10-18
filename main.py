@@ -5,30 +5,7 @@ from extractors.utils import read_file
 from extractors.models import TechCompany
 
 # Define the haystack and example needles
-# haystack = """Ryoshi, based in Neo Tokyo, Japan, is a private quantum computing firm founded in 2031, currently valued at $8.7 billion with 1,200 employees focused on quantum cryptography.
-
-#         ChronosTech, located in New Shanghai, Earth, was founded in 2077,
-#         employs 2,800 people, and focuses on time-manipulation devices,
-#         with a public status and a valuation of $6.2 billion.
-
-#         Quantum Forge, a public company located in Orion City, Earth, was
-#         founded in 2030 and currently employs 12,500 people, with a
-#         valuation of $15.4 billion focused on quantum computing
-#         advancements.
-#         """
 haystack = read_file("data/haystack.txt")
-lines = haystack.splitlines()
-# lines = lines[47_000:48_000]
-# lines = lines[46_000:51_000]
-# lines = lines[46_000:85_000]
-lines = lines[81_000:85_000]
-# lines = lines[47_000:51_000]
-haystack = "\n".join(lines)
-
-# haystack = """
-# Cyberion Systems, a public quantum networking company
-# headquartered in Olympus Mons, Mars, was founded in 2050 and
-# employs 6,700 people with a current valuation of $12.9 billion."""
 
 
 example_needles = [
@@ -70,7 +47,10 @@ extreme environments.""",
 ]
 
 # Execute the extraction
-companies = extract_multi_needle(TechCompany, haystack, example_needles)
+# companies = extract_multi_needle(TechCompany, haystack, example_needles)
+companies = extract_multi_needle(
+    TechCompany, haystack, example_needles, is_valid_chunk=lambda chunk: "$" in chunk
+)
 
 if not companies:
     print("No companies extracted.")
