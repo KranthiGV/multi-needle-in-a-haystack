@@ -1,3 +1,4 @@
 pydantic
 instructor[google-generativeai]
 python-dotenv
+ruff
