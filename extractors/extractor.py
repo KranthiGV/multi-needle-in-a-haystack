@@ -91,7 +91,7 @@ async def extract_multi_needle_async(
 
     # Configure max lines based on actual haystack data distribution
     # We want needle finding to be efficient. So, we chunk the haystack into smaller pieces
-    chunks = split_into_chunks(haystack, max_lines=1_000)
+    chunks = split_into_chunks(haystack, max_lines=500)
 
     # Filter chunks based on the provided lambda
     if is_valid_chunk:
