@@ -2,7 +2,7 @@ import os
 from dotenv import load_dotenv
 import instructor
 import google.generativeai as genai
-from models import User
+from models import TechCompany
 from typing import List, Type, TypeVar
 from pydantic import BaseModel
 
@@ -15,16 +15,6 @@ client = instructor.from_gemini(
         model_name="models/gemini-1.5-flash-latest",
     ),
     mode=instructor.Mode.GEMINI_JSON,
-)
-
-resp = client.messages.create(
-    messages=[
-        {
-            "role": "user",
-            "content": "Extract Jason is 25 years old.",
-        }
-    ],
-    response_model=User,
 )
 
 
@@ -42,6 +32,23 @@ def extract_multi_needle(
     Returns:
     List[T]: A list of extracted needles conforming to the provided schema.
     """
-    # Implementation goes here
-    extracted_needles = []
+    resp = client.messages.create(
+        messages=[
+            {
+                "role": "user",
+                "content": haystack,
+            }
+        ],
+        response_model=schema,
+    )
+    extracted_needles = resp
     return extracted_needles
+
+
+print(
+    extract_multi_needle(
+        TechCompany,
+        "Ryoshi, based in Neo Tokyo, Japan, is a private quantum computing firm founded in 2031, currently valued at $8.7 billion with 1,200 employees focused on quantum cryptography.",
+        []
+    )
+)
