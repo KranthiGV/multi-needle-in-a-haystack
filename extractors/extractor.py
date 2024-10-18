@@ -2,7 +2,6 @@ import os
 from dotenv import load_dotenv
 import instructor
 import google.generativeai as genai
-from models import TechCompany
 from typing import List, Type, TypeVar, Iterable
 from pydantic import BaseModel
 
@@ -34,7 +33,7 @@ def extract_multi_needle(
     """
 
     schemas = Iterable[schema]
-    
+
     resp = client.messages.create(
         messages=[
             {
@@ -46,25 +45,3 @@ def extract_multi_needle(
     )
     extracted_needles = resp
     return extracted_needles
-
-
-
-companies = extract_multi_needle(
-    TechCompany,
-    """Ryoshi, based in Neo Tokyo, Japan, is a private quantum computing firm founded in 2031, currently valued at $8.7 billion with 1,200 employees focused on quantum cryptography.
-        
-        ChronosTech, located in New Shanghai, Earth, was founded in 2077,
-        employs 2,800 people, and focuses on time-manipulation devices,
-        with a public status and a valuation of $6.2 billion.
-
-        Quantum Forge, a public company located in Orion City, Earth, was
-        founded in 2030 and currently employs 12,500 people, with a
-        valuation of $15.4 billion focused on quantum computing
-        advancements.
-        """,
-        []
-    )
-
-for company in companies:
-    print(company)
-    print("\n\n\n")
