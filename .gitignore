@@ -44,3 +44,6 @@ data/*
 
 # Ignore video files
 video/*
+
+# Ignore instructions
+instructions.md
