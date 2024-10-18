@@ -24,3 +24,10 @@ GOOGLE_API_KEY=<your_google_api_key>
 5. Run the script
 `python main.py`
 6. Observe the output in the `output` directory.
+
+## Ideas to improve
+
+- Improve prompt and add robust retry mechanisms.
+- This helps us use a less sophisticated LLM model. It can drastically reduce the cost and time to process.
+- Use a more sophisticated classification mechanisms to filter chunks.
+- Try different chunking mechanisms.
