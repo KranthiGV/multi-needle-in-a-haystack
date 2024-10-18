@@ -1,5 +1,5 @@
 pydantic
-instructor[google-generativeai]
-python-dotenv
+instructor[google - generativeai]
+python - dotenv
 ruff
 tqdm

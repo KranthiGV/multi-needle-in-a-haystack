@@ -18,7 +18,8 @@ from extractors.models import TechCompany
 #         """
 haystack = read_file("data/haystack.txt")
 lines = haystack.splitlines()
-lines = lines[47_000:48_000]
+# lines = lines[47_000:48_000]
+lines = lines[40_000:59_000]
 # lines = lines[47_000:51_000]
 haystack = "\n".join(lines)
 
@@ -108,3 +109,7 @@ with open(csv_path, "w", newline="") as csv_file:
                 company.primary_focus,
             ]
         )
+
+print(
+    f"Extracted {len(companies)} companies.\nResults written to: {markdown_path} and {csv_path}"
+)

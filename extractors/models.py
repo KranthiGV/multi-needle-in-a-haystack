@@ -3,7 +3,7 @@ from pydantic import BaseModel, Field
 
 
 class TechCompany(BaseModel):
-    name: Optional[str] = Field(
+    name: str = Field(
         default=None, description="The full name of the technology company"
     )
     location: Optional[str] = Field(
