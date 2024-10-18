@@ -38,19 +38,19 @@ def extract_multi_needle(
         messages=[
             {
                 "role": "user",
-                "content": """You are a information extraction expert. 
+                "content": """You are an information extraction expert. 
                 Here are some examples of the information you would be extracting:
                 <examples>
                 {% for example in examples %}
-                <example>
-                    {{ example }}
-                </example>
+                    <example>
+                        {{ example }}
+                    </example>
                 {% endfor %}
                 </examples>
                 
                 Now, please extract the following information from the text:
                 <context>
-                {{ data }}
+                    {{ data }}
                 </context>""",
             }
         ],

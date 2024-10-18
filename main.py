@@ -1,3 +1,5 @@
+import csv
+import os
 from extractors.extractor import extract_multi_needle
 from extractors.models import TechCompany
 
@@ -55,7 +57,47 @@ extreme environments.""",
 # Execute the extraction
 companies = extract_multi_needle(TechCompany, haystack, example_needles)
 
-# Print the results
-for company in companies:
-    print(company)
-    print("\n\n\n")
+# Define output paths
+markdown_path = "output/extract.md"
+csv_path = "output/extract.csv"
+
+# Ensure the output directory exists
+os.makedirs(os.path.dirname(markdown_path), exist_ok=True)
+
+# Write to markdown file
+with open(markdown_path, "w") as md_file:
+    for company in companies:
+        md_file.write(f"## {company.name}\n")
+        md_file.write(f"- **Location**: {company.location}\n")
+        md_file.write(f"- **Employee Count**: {company.employee_count}\n")
+        md_file.write(f"- **Founding Year**: {company.founding_year}\n")
+        md_file.write(f"- **Public**: {'Yes' if company.is_public else 'No'}\n")
+        md_file.write(f"- **Valuation**: ${company.valuation} billion\n")
+        md_file.write(f"- **Primary Focus**: {company.primary_focus}\n\n")
+
+# Write to CSV file
+with open(csv_path, "w", newline="") as csv_file:
+    writer = csv.writer(csv_file)
+    writer.writerow(
+        [
+            "Name",
+            "Location",
+            "Employee Count",
+            "Founding Year",
+            "Public",
+            "Valuation (in billion $)",
+            "Primary Focus",
+        ]
+    )
+    for company in companies:
+        writer.writerow(
+            [
+                company.name,
+                company.location,
+                company.employee_count,
+                company.founding_year,
+                "Yes" if company.is_public else "No",
+                company.valuation,
+                company.primary_focus,
+            ]
+        )
