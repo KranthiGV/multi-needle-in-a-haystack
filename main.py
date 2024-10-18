@@ -19,9 +19,16 @@ from extractors.models import TechCompany
 haystack = read_file("data/haystack.txt")
 lines = haystack.splitlines()
 # lines = lines[47_000:48_000]
-lines = lines[40_000:59_000]
+# lines = lines[46_000:51_000]
+# lines = lines[46_000:85_000]
+lines = lines[81_000:85_000]
 # lines = lines[47_000:51_000]
 haystack = "\n".join(lines)
+
+# haystack = """
+# Cyberion Systems, a public quantum networking company
+# headquartered in Olympus Mons, Mars, was founded in 2050 and
+# employs 6,700 people with a current valuation of $12.9 billion."""
 
 
 example_needles = [
@@ -64,6 +71,10 @@ extreme environments.""",
 
 # Execute the extraction
 companies = extract_multi_needle(TechCompany, haystack, example_needles)
+
+if not companies:
+    print("No companies extracted.")
+    exit()
 
 # Define output paths
 markdown_path = "output/extract.md"
@@ -113,3 +124,7 @@ with open(csv_path, "w", newline="") as csv_file:
 print(
     f"Extracted {len(companies)} companies.\nResults written to: {markdown_path} and {csv_path}"
 )
+print("\n\n")
+for company in companies:
+    print(company)
+    print("\n\n")

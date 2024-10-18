@@ -46,7 +46,8 @@ async def handle_extraction_from_chunk(
                     {% endfor %}
                     </examples>
                     
-                    Now, please extract the following information from the text:
+                    Do not extract anything for the examples provided. Use only the context given below.
+                    Please extract the following information from the text:
                     <context>
                         {{ data }}
                     </context>""",
@@ -55,6 +56,10 @@ async def handle_extraction_from_chunk(
             response_model=schemas,
             context={"data": chunk, "examples": example_needles},
         )
+
+        print(f"[DEBUG]: Extracted {len(resp)} needles from chunk.")
+        print(f"[DEBUG]: Extracted needles: {resp}")
+
         return resp
 
 
@@ -68,7 +73,7 @@ async def extract_multi_needle_async(
 
     # Configure max lines based on actual haystack data distribution
     # We want needle finding to be efficient. So, we chunk the haystack into smaller pieces
-    chunks = split_into_chunks(haystack, max_lines=10_000)
+    chunks = split_into_chunks(haystack, max_lines=5_000)
 
     tasks = [
         handle_extraction_from_chunk(schema, chunk, example_needles, semaphore)
@@ -97,7 +102,7 @@ def extract_multi_needle(
     try:
         return asyncio.run(
             extract_multi_needle_async(
-                schema, haystack, example_needles, max_concurrency=5
+                schema, haystack, example_needles, max_concurrency=10
             )
         )
     except Exception as e:

@@ -1,5 +1,5 @@
 from typing import Optional
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ValidationInfo, field_validator
 
 
 class TechCompany(BaseModel):
@@ -27,3 +27,15 @@ class TechCompany(BaseModel):
         default=None,
         description="Main area of technology or industry the company focuses on",
     )
+
+    @field_validator('name')
+    @classmethod
+    def validate_name(cls, value,  info: ValidationInfo):
+        context = info.context
+        if context:
+            haystack = context.get('data', '')
+            if value not in haystack:
+                raise ValueError(f"Company name: '{value}' is not found in context given to you. Do not use examples. Use only context.")
+            else:
+                print(f"[DEBUG]: Company name: '{value}' is found.")
+        return value
