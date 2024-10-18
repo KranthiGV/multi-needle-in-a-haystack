@@ -4,6 +4,7 @@ import instructor
 import google.generativeai as genai
 from typing import List, Type, TypeVar, Iterable
 from pydantic import BaseModel
+import asyncio
 
 T = TypeVar("T", bound=BaseModel)
 
@@ -17,21 +18,9 @@ client = instructor.from_gemini(
 )
 
 
-def extract_multi_needle(
+async def extract_multi_needle_async(
     schema: Type[T], haystack: str, example_needles: List[str]
 ) -> List[T]:
-    """
-    Extracts and structures information from a large text corpus based on a given schema and examples.
-
-    Args:
-    schema (Type[T]): A Pydantic model defining the structure of the needle to be extracted.
-    haystack (str): The large text corpus to search through (haystack).
-    example_needles (List[str]): A list of example sentences (needles).
-
-    Returns:
-    List[T]: A list of extracted needles conforming to the provided schema.
-    """
-
     schemas = Iterable[schema]
 
     resp = client.messages.create(
@@ -57,5 +46,26 @@ def extract_multi_needle(
         response_model=schemas,
         context={"data": haystack, "examples": example_needles},
     )
-    extracted_needles = resp
+
+    return resp
+
+
+def extract_multi_needle(
+    schema: Type[T], haystack: str, example_needles: List[str]
+) -> List[T]:
+    """
+    Extracts and structures information from a large text corpus based on a given schema and examples.
+
+    Args:
+    schema (Type[T]): A Pydantic model defining the structure of the needle to be extracted.
+    haystack (str): The large text corpus to search through (haystack).
+    example_needles (List[str]): A list of example sentences (needles).
+
+    Returns:
+    List[T]: A list of extracted needles conforming to the provided schema.
+    """
+
+    extracted_needles = asyncio.run(
+        extract_multi_needle_async(schema, haystack, example_needles)
+    )
     return extracted_needles
