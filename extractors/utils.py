@@ -7,6 +7,12 @@ def read_file(filename):
 
 
 def split_into_chunks(text: str, max_lines=10_000) -> List[str]:
+    """
+    Splits a large text into chunks of a specified maximum number of lines.
+    Assumptions:
+    - Paragraphs are separated by blank lines.
+    - We won't be splitting across pieces of text relevant to the extraction. (less likely to split a needle)
+    """
     lines = text.splitlines()
     chunks = []
     current_chunk = []
