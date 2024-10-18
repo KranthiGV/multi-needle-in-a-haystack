@@ -38,10 +38,24 @@ def extract_multi_needle(
         messages=[
             {
                 "role": "user",
-                "content": haystack,
+                "content": """You are a information extraction expert. 
+                Here are some examples of the information you would be extracting:
+                <examples>
+                {% for example in examples %}
+                <example>
+                    {{ example }}
+                </example>
+                {% endfor %}
+                </examples>
+                
+                Now, please extract the following information from the text:
+                <context>
+                {{ data }}
+                </context>""",
             }
         ],
         response_model=schemas,
+        context={"data": haystack, "examples": example_needles},
     )
     extracted_needles = resp
     return extracted_needles

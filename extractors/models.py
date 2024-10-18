@@ -7,7 +7,8 @@ class TechCompany(BaseModel):
         default=None, description="The full name of the technology company"
     )
     location: Optional[str] = Field(
-        default=None, description="City and country where the company is headquartered"
+        default=None,
+        description="City and state/province/country/planet where the company is headquartered",
     )
     employee_count: Optional[int] = Field(
         default=None, description="Total number of employees"
